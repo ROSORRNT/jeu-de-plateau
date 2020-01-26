@@ -80,7 +80,6 @@ class Map {
 
   genereMap = function() {
     this.weaponsOnMap.forEach(weapon => {
-      weapon.setDamage();
       weapon.caseId = Math.floor(Math.random() * Math.floor(100));
     });
 
