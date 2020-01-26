@@ -5,10 +5,15 @@ class Player {
     this.id = id;
     this.name = `player-${id}`;
     this.canMove = canMove;
+    this.canFight = false;
+    this.defense = false;
     this.playerCard = document.getElementById(`player${id}-weapon-card`);
+    this.playerBtns = document.querySelector(`.player-${id}-btns`);
   }
 
   static move(players, e, self) {
+    const currentPlayer = players[0];
+    const pastPlayer = players[1];
     if (
       e.target.hasAttribute("data-access") ||
       e.target.dataset.playable !== "1"
@@ -16,23 +21,47 @@ class Player {
       return;
     }
 
-    if (players[0].canMove) {
+    if (currentPlayer.canMove) {
       const prevCase = document.querySelector(
-        `[data-player="player-${players[0].id}"]`
+        `[data-player="player-${currentPlayer.id}"]`
       );
       const nextCase = e.target;
-      players[0].caseId = nextCase.id;
-      self.setPlayableBoxes(players[0]);
-      self.setPlayerWeapon(players[0]);
-      nextCase.dataset.player = `player-${players[0].id}`;
-      prevCase.removeAttribute("data-player", `player-${players[0].id}`);
-      players[0].nbMove++;
-      players[0].setCanMove();
-      if (!players[0].canMove) {
-        players[0].nbMove = 0;
-        players[1].canMove = true;
-        self.setPlayableBoxes(players[1]);
+      currentPlayer.caseId = nextCase.id;
+      self.setPlayableBoxes(currentPlayer);
+      self.setPlayerWeapon(currentPlayer);
+      nextCase.dataset.player = `player-${currentPlayer.id}`;
+      prevCase.removeAttribute("data-player", `player-${currentPlayer.id}`);
+      currentPlayer.nbMove++;
+      currentPlayer.setCanMove();
+      
+      if (!currentPlayer.canMove) {
+        currentPlayer.nbMove = 0;
+        pastPlayer.canMove = true;
+        self.setPlayableBoxes(pastPlayer);
+        Player.fight(players);
       }
+    }
+  }
+
+  static fight(players, self) {
+    const attacker = players[0];
+    const attacked = players[1];
+    if (
+      attacker.caseId == attacked.caseId - 10 ||
+      attacker.caseId == parseInt(attacked.caseId) + 10 ||
+      attacker.caseId == attacked.caseId - 1 ||
+      attacker.caseId == parseInt(attacked.caseId) + 1
+    ) {
+      const tds = document.querySelectorAll("td");
+      tds.forEach(td => {
+        td.removeAttribute('data-playable')
+        td.dataset.fight = "1";
+      });    
+      attacker.playerBtns.style = "";
+
+      Player.decreaseLife(attacker, attacked);
+    } else {
+      return;
     }
   }
 
@@ -62,4 +91,6 @@ class Player {
         break;
     }
   }
+
+  static decreaseLife(attacker, attacked) {}
 }

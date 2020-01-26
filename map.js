@@ -1,6 +1,6 @@
 class Map {
   board = document.querySelector("#board");
-  button = document.querySelector("button");
+  button = document.querySelector(".new-game");
   tableIsGenerated = false;
   player1 = new Player(1, true);
   player2 = new Player(2, false);
@@ -27,7 +27,7 @@ class Map {
         td.dataset.player = `player-${this.players[i].id}`;
         this.players[i].caseId = td.id;
         if (td.hasAttribute("data-access")) {
-          td.setAttribute("data-access", "clean");
+          td.setAttribute("data-playable", "0");
         } else if (td.hasAttribute("data-weapon")) {
           td.setAttribute("data-weapon", "clean");
         }
@@ -78,7 +78,7 @@ class Map {
     });
   };
 
-  genereMap = function() {
+  genereMap() {
     this.weaponsOnMap.forEach(weapon => {
       weapon.caseId = Math.floor(Math.random() * Math.floor(100));
     });
@@ -122,5 +122,5 @@ class Map {
       }
     }
     this.setPlayableBoxes(this.getWhoCanPlay()[0]);
-  };
+  }
 }
