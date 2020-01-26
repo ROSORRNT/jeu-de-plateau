@@ -1,0 +1,126 @@
+* {
+    box-sizing: border-box;
+    font-family: sans-serif;
+  }
+  
+  html {
+    padding: 5px;
+  }
+  
+  body {
+    margin: 0;
+  }
+  
+  #board {
+    width: 100%;
+    height: 40rem;
+  }
+  
+  #board table {
+    top: 0;
+  }
+  
+  #board header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  table {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+    margin-top: 0;
+  }
+  
+  tbody {
+    margin: 1rem;
+    width: 100% auto;
+  }
+  
+  tr {
+    box-shadow: 3px 2px 16px 0px rgba(0, 0, 0, 0.438);
+  }
+  
+  td {
+    background-color: white;
+    background-image: url("./img/open.jpg");
+    background-size: 100% 100%;
+  }
+  
+  td[data-playable="1"] {
+    background: #12c241;
+    border: 2px solid #0e4f1f;
+  }
+  
+  /* td players */
+  td[data-player="player-1"] {
+    background-image: url("./img/player1.png");
+    background-size: 100% 100%;
+  }
+  
+  td[data-player="player-2"] {
+    background-image: url("./img/player2.png");
+    background-size: 100% 100%;
+  }
+  
+  /* td Ammo */
+  /* td[data-playable="0"] {
+    background-color: white;
+    background-image: url("./img/open.jpg");
+    background-size: 100% 100%;
+  } */
+  
+  
+  td[data-weapon="dague"] {
+    background-image: url("./img/dague.png");
+    background-size: 100% 100%;
+  }
+  
+  td[data-weapon="epee"] {
+    background-image: url("./img/epee.png");
+    background-size: 100% 100%;
+  }
+  
+  td[data-weapon="gun"] {
+    background-image: url("./img/gun.png");
+    background-size: 100% 100%;
+  }
+  
+  td[data-weapon="massu"] {
+    background-image: url("./img/massu.png");
+    background-size: 100% 100%;
+  }
+  
+  .case {
+    border: 0.1rem solid rgb(39, 39, 39);
+    width: 3rem;
+    height: 3rem;
+  }
+
+  td[data-access="none"] {
+    background-image: url("./img/obstcl.jpg");
+    background-size: 100% 100%;
+    border: 0.11rem rgb(202, 22, 22) solid;
+  }
+  
+  button {
+    background: #0e4f1f;
+    color: white;
+    font: inherit;
+    border: 1.5px solid #0e4f1f;
+  
+    padding: 0.5rem;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  
+  button:hover,
+  button:active {
+    background: white;
+    color: #0e4f1f;
+  }
+  
