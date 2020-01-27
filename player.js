@@ -1,26 +1,28 @@
 class Player {
   nbMove = 0;
-  weapon = { name: "Knife", damage: 5 };
+  weapon = { name: "Knife", damage: 10 };
   constructor(id, canMove) {
     this.id = id;
     this.name = `player-${id}`;
+    this.health = 100;
     this.canMove = canMove;
     this.canFight = false;
     this.defense = false;
-    this.playerCard = document.getElementById(`player${id}-weapon-card`);
-    this.playerBtns = document.querySelector(`.player-${id}-btns`);
+    this.playerHealthBarEl = document.getElementById(`healthBar-player-${id}`);
+    this.playerCardEl = document.getElementById(`player${id}-weapon-card`);
+    this.playerBtnsEl = document.querySelector(`.player-${id}-btns`);
   }
 
   static move(players, e, self) {
     const currentPlayer = players[0];
     const pastPlayer = players[1];
+    // Stop move() si le click est sur un obstacle
     if (
       e.target.hasAttribute("data-access") ||
       e.target.dataset.playable !== "1"
-    ) {
+    )
       return;
-    }
-
+    // Lance le move if player can move
     if (currentPlayer.canMove) {
       const prevCase = document.querySelector(
         `[data-player="player-${currentPlayer.id}"]`
@@ -33,36 +35,44 @@ class Player {
       prevCase.removeAttribute("data-player", `player-${currentPlayer.id}`);
       currentPlayer.nbMove++;
       currentPlayer.setCanMove();
-      
+      // Conditions pour lancer un fight
+      if (
+        currentPlayer.caseId == parseInt(pastPlayer.caseId) - 10 ||
+        currentPlayer.caseId == parseInt(pastPlayer.caseId) + 10 ||
+        currentPlayer.caseId == pastPlayer.caseId - 1 ||
+        currentPlayer.caseId == parseInt(pastPlayer.caseId) + 1
+      ) {
+        const tds = document.querySelectorAll("td");
+        tds.forEach(td => {
+          td.setAttribute("data-playable", "0");
+          td.dataset.fight = "1";
+        });
+        return Player.fight(players);
+      }
+      // Si le can move du current est passé à false (+3moves)
       if (!currentPlayer.canMove) {
         currentPlayer.nbMove = 0;
         pastPlayer.canMove = true;
         self.setPlayableBoxes(pastPlayer);
-        Player.fight(players);
       }
     }
   }
 
-  static fight(players, self) {
+  static fight(players) {
     const attacker = players[0];
     const attacked = players[1];
-    if (
-      attacker.caseId == attacked.caseId - 10 ||
-      attacker.caseId == parseInt(attacked.caseId) + 10 ||
-      attacker.caseId == attacked.caseId - 1 ||
-      attacker.caseId == parseInt(attacked.caseId) + 1
-    ) {
-      const tds = document.querySelectorAll("td");
-      tds.forEach(td => {
-        td.removeAttribute('data-playable')
-        td.dataset.fight = "1";
-      });    
-      attacker.playerBtns.style = "";
-
-      Player.decreaseLife(attacker, attacked);
-    } else {
-      return;
-    }
+    attacked.playerBtnsEl.style = "visibility: hidden;";
+    attacker.playerBtnsEl.style = "";
+    const attackBtn = attacker.playerBtnsEl.querySelector(".attack-btn");
+    const defenseBtn = attacker.playerBtnsEl.querySelector(".defense-btn");
+    const attack = defense => {  
+      attacked.health -= attacker.weapon.damage;
+      attacked.playerHealthBarEl.style = `width: ${attacked.health}%;`;
+      if (attacker.health > 0 || attacked.health > 0)
+      Player.fight([attacked, attacker])
+    };
+    attackBtn.addEventListener("click", () => attack());
+    // defenseBtn.addEventListener("click", defense);
   }
 
   setCanMove() {
@@ -72,25 +82,23 @@ class Player {
   }
 
   updateCard() {
-    this.playerCard.textContent = `Arme : ${this.weapon.name} / Dégat : ${this.weapon.damage} `;
+    this.playerCardEl.textContent = `Arme : ${this.weapon.name} / Dégat : ${this.weapon.damage} `;
   }
 
   setDamage() {
     switch (this.weapon.name) {
       case "dague":
-        this.weapon.damage = 10;
+        this.weapon.damage = 15;
         break;
       case "epee":
         this.weapon.damage = 20;
         break;
       case "gun":
-        this.weapon.damage = 30;
+        this.weapon.damage = 25;
         break;
       case "massu":
-        this.weapon.damage = 40;
+        this.weapon.damage = 30;
         break;
     }
   }
-
-  static decreaseLife(attacker, attacked) {}
 }

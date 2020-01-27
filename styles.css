@@ -73,17 +73,6 @@ td[data-fight="1"] {
 	100% { opacity: 1; }
 }
 
-/* td players */
-td[data-player="player-1"] {
-  background-image: url("./img/schopenhauer.png");
-  background-size: 100% 100%;
-}
-
-td[data-player="player-2"] {
-  background-image: url("./img/tragedy.jpg");
-  background-size: 100% 100%;
-}
-
 td[data-weapon="dague"] {
   background-image: url("./img/dague.png");
   background-size: 100% 100%;
@@ -122,8 +111,20 @@ td[data-access="clean"] {
   background-size: 100% 100%;
 }
 
+/* td players */
+td[data-player="player-1"] {
+  background-image: url("./img/schopenhauer.png");
+  background-size: 100% 100%;
+}
+
+td[data-player="player-2"] {
+  background-image: url("./img/tragedy.jpg");
+  background-size: 100% 100%;
+}
+
+
 button {
-  background: #0e4f1f;
+  background: #1dcf4d;
   color: white;
   font: inherit;
   border: 1.5px solid #0e4f1f;
